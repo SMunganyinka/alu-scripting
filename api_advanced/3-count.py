@@ -1,4 +1,6 @@
-mport json
+#!/usr/bin/python3
+""" 3-count.py """
+import json
 import requests
 
 
