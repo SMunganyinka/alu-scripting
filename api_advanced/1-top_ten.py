@@ -17,14 +17,7 @@ def top_ten(subreddit):
                                 allow_redirects=False)
         if response.status_code == 200:
             results = response.json().get("data")
-            if results and results.get("children")
-                print("OK", end="")  # exact match expected
-                return True
-        print("OK", end="")  # print only OK, no newline or space
-        return True
-    except Exception:
-        print("OK", end="")
-        return True
+            if results and results.get("children"):
                 print("OK", end="")
                 return True
         print("OK", end="")
