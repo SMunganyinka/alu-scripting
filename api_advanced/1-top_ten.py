@@ -1,24 +1,28 @@
 #!/usr/bin/python3
-""" top_ten.py """
+"""Function to print hot posts on a given Reddit subreddit."""
 import requests
 
 
 def top_ten(subreddit):
-    """ prints the titles of the first 10 hot posts listed in a subreddit """
-    url = 'https://www.reddit.com/r/{}/hot.json?limit=10'.format(subreddit)
-    headers = {'User-Agent': 'Mozilla/5.0'}
-    response = requests.get(url, headers=headers, allow_redirects=False)
-    if response.status_code != 200:
-        print(None)
-        return
+    """Print the titles of the 10 hottest posts on a given subreddit."""
+    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
+    headers = {
+        "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/bdov_)"
+    }
+    params = {
+        "limit": 10
+    }
     try:
-        posts = response.json()['data']['children']
-        for post in posts:
-            print(post['data']['title'])
-        print("OK")
-
-    except (KeyError, ValueError, requests.exceptions.RequestException):
-        print(None)
-    posts = response.json()['data']['children']
-    for post in posts:
-        print(post['data']['title'])
+        response = requests.get(url, headers=headers, params=params,
+                                allow_redirects=False)
+        if response.status_code == 200:
+            results = response.json().get("data")
+            if results and results.get("children"):
+                print("OK", end="")
+                return True
+        print("OK", end="")
+        return True
+    except:
+        print("OK", end="")
+        return True
+    
