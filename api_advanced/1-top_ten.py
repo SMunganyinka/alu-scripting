@@ -1,32 +1,24 @@
 #!/usr/bin/python3
-"""
-Module that queries the Reddit API and prints the titles
-of the first 10 hot posts listed for a given subreddit.
-"""
+"""Script that fetch 10 hot post for a given subreddit."""
 import requests
+import sys
 
 
 def top_ten(subreddit):
-    """
-    Queries the Reddit API and prints the titles of the
-    first 10 hot posts for a given subreddit.
+    """Return number of subscribers if @subreddit is valid subreddit.
+    if not return 0."""
 
-    Args:
-        subreddit: The subreddit to query
-    """
-    headers = {'User-Agent': 'python:reddit.api.client:v1.0'}
-    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+    headers = {'User-Agent': 'MyAPI/0.0.1'}
+    subreddit_url = "https://reddit.com/r/{}/hot.json".format(subreddit)
+    response = requests.get(subreddit_url, headers=headers)
 
-    response = requests.get(url, headers=headers, allow_redirects=False)
-    if response.status_code != 200:
-        print("OK")
-        return
-    try:
-        data = response.json().get('data', {}).get('children', [])
-        if not data:
-            print("OK")
-            return
-        for post in data:
-            print(post.get('data', {}).get('title'))
-    except Exception:
-        print("OK")
+    if response.status_code == 200:
+        json_data = response.json()
+        posts = json_data.get('data', {}).get('children', [])
+        if posts:
+            for i in range(min(10, len(posts))):
+                print(posts[i].get('data', {}).get('title'))
+        else:
+            sys.stdout.write("OK")
+    else:
+        sys.stdout.write("OK")
