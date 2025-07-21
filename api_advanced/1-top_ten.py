@@ -1,24 +1,24 @@
 #!/usr/bin/python3
-"""get hot post function"""
 
+"""
+Script to print top 10 hot posts on a given Reddit subreddit.
+"""
 
-import json
 import requests
-import sys
 
 
 def top_ten(subreddit):
-    """get top ten hot post"""
-    if len(sys.argv) < 2:
-        return print(None)
-    else:
-        url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
-        headers = {"User-Agent": "Mozilla/5.0"}
-        result = requests.get(url, headers=headers, allow_redirects=False)
-        listing = []
-        if result.status_code != 200:
-            return print(None)
-        body = json.loads(result.text)
-        for i in body["data"]["children"]:
-            print(i["data"]["title"])
+    """"top ten"""
+    url = "https://www.reddit.com/r/{}/hot.json?limit=10" \
+        .format(subreddit)
 
+    res = requests.get(url,
+                       headers={
+                           'User-Agent': 'Mozilla/5.0'})
+
+    if res.status_code != 200:
+        print("OK", end="")
+    else:
+        json_response = res.json()
+        posts = json_response.get('data').get('children')
+        [print(post.get('data').get('title')) for post in posts]
